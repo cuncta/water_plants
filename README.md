@@ -1,6 +1,7 @@
 # Raspberry Pi and Arduino Automated Plant Watering with Website
 
 Set up your Pi and Arduino to automatically take care of house plants!
+In this project Pizero W is used to make a website where you can set up set the watering parameters. I set it to water the plants twice a day at desired time for a certain number of seconds [1-9].
 
 
 ## Hardware components
@@ -13,7 +14,7 @@ Set up your Pi and Arduino to automatically take care of house plants!
 * Relay module
 * Submersible Pump
 
-### Wiring
+### Wiring 
 
 * LCD screen:
   * LCD RS pin to digital pin 12
@@ -30,11 +31,12 @@ Set up your Pi and Arduino to automatically take care of house plants!
 
 * Relay:
   * relay pin to digital pin 7
+  * the power supply of the submersible pump must be connected to this relay
 
 
-## Software
+## Prerequisites
 
-* Raspberrypi zero w with raspbian.
+* Raspberrypi zero w with [Jessie](https://www.raspberrypi.org/blog/raspbian-jessie-is-here/).
 
 
 * Python 2.7
@@ -50,7 +52,53 @@ Set up your Pi and Arduino to automatically take care of house plants!
   * time
 
 
-### Installing
+## Software
+
+There are three parts to this setup. One file is the arduino sketch, and the other runs a local web server, and some files are used to store data. 
+* Arduino 
+    * *arduino_water_bt.ino* this is the arduino sketch. Arduino will check wether there is an incoming data from bluetooth. If it receives something there are four possibilities:
+        * "w" it activates the pump for a certain amount of seconds, default is 8.
+        * "h" it waits for the next command
+        * "0-9" if it receives a number between 0 and 9 it changes the watering time to that value
+        * if any other string or value is received it does nothing
+* Webserver
+    * *auto_water.py* this file, when executed, it starts the auto watering process
+    * *water.py* contains the functions called by the webserver.
+    * *web_plants.py* this is the python script that runs the webserver.
+    * *templates/main.html* the template for the webserver.
+* Data Storage
+    * *last_watered.txt* contains the list of dates and times when the plants were watered.
+    * *next_water.txt* contains the current watering schedule.
+    * *watering_parameters.txt* contains the watering parameters saved as a dictionary
+
+### Flask Webserver
+The template for the Webserver is defined in *main.html*, that must be in a subfolder called templates. Before starting the webserver change the bluetooth address with your corresponding address in *water.py*. The port should not be changed.
+```
+#bluetooth address of arduino
+bd_addr = "00:21:13:02:C2:54"
+port = 1
+```
+To start the webserver run the following command:
+```
+sudo python web_plants.py
+```
+Now if you navigate to the ip address of your Pi on port 12345 you should see a web dashboard. To change the port modifiy the port number on the last line of *web_plants.py*
+```
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=12345, debug=True)
+```
+
+### Run Webserver automatically
+To auto start the webserver when Pi gets turned on a tool called cronjob can be used:
+```
+sudo crontab -e
+```
+In the text editor add the following line and make sure to leave an empty line below
+```
+@reboot cd <your path to web_plants>; sudo python web_plants.py
+
+
+```
 
 
 ## License
