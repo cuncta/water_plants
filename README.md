@@ -2,6 +2,7 @@
 
 Set up your Pi and Arduino to automatically take care of house plants!
 In this project Pizero W is used to make a website where you can set up set the watering parameters. I set it to water the plants twice a day at desired time for a certain number of seconds [1-9].
+![The website to control plants](website.png)
 
 
 ## Hardware components
