@@ -48,6 +48,13 @@ def get_next_water():
 		return tail(f,1)
 	except:
 		return "NEVER!"
+
+def get_watering_duration():
+    with open('watering_parameters.txt') as handle:
+    	wp = json.loads(handle.read())
+    m = "The watering duration is set to "+str(wp["watering_time"])+" seconds"
+    return m
+    
 def auto_water():
     with open('watering_parameters.txt') as handle:
     	wp = json.loads(handle.read())

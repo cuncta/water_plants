@@ -33,6 +33,11 @@ def check_water_schedule():
     templateData = template(text = water.get_next_water())
     return render_template('main.html', **templateData)
 
+@app.route("/check_watering_duration")
+def check_watering_duration():
+    templateData = template(text = water.get_watering_duration())
+    return render_template('main.html', **templateData)
+
 @app.route("/water")
 def action2():
     water.pump_on()
