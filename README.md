@@ -34,6 +34,12 @@ In this project Pizero W is used to make a website where you can set up set the 
   * relay pin to digital pin 7
   * the power supply of the submersible pump must be connected to this relay
 
+* DS3231 Clock
+  * GND to ground
+  * Vcc to 5V
+  * SCL to SCL in arduino
+  * SDA to SDA in arduino
+
 ### Wiring to the second arduino
 
 * Bluetooth Module:
@@ -66,7 +72,7 @@ In this project Pizero W is used to make a website where you can set up set the 
 
 There are three parts to this setup. Two files are the arduino sketches, and the other runs a local web server, and some files are used to store data.
 * Arduino
-    * *arduino_water_bt.ino* this is the arduino sketch. Arduino will check wether there is an incoming data from bluetooth. If it receives something there are four possibilities:
+    * *arduino_water_bt.ino* this is the arduino sketch. Arduino will check wether there is an incoming data from bluetooth. At the first setup uncomment line 102 (//setDS3231time(00,42,17,2,28,05,18);) and set the proper time. Then remember to comment it again if you plan to change the upload the code in arduino again. If it receives something there are four possibilities:
         * "w" it activates the pump for a certain amount of seconds, default is 8.
         * "h" it waits for the next command
         * "0-9" if it receives a number between 0 and 9 it changes the watering time to that value
