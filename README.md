@@ -15,7 +15,7 @@ In this project Pizero W is used to make a website where you can set up set the 
 * Relay module
 * Submersible Pump
 
-### Wiring 
+### Wiring
 
 * LCD screen:
   * LCD RS pin to digital pin 12
@@ -55,8 +55,8 @@ In this project Pizero W is used to make a website where you can set up set the 
 
 ## Software
 
-There are three parts to this setup. One file is the arduino sketch, and the other runs a local web server, and some files are used to store data. 
-* Arduino 
+There are three parts to this setup. One file is the arduino sketch, and the other runs a local web server, and some files are used to store data.
+* Arduino
     * *arduino_water_bt.ino* this is the arduino sketch. Arduino will check wether there is an incoming data from bluetooth. If it receives something there are four possibilities:
         * "w" it activates the pump for a certain amount of seconds, default is 8.
         * "h" it waits for the next command

@@ -97,7 +97,7 @@ def auto_water_off():
     scheduler.print_jobs()
 def pump_on():
     print 'watering'
-    with open("last_watered.txt", "a+") as f
+    with open("last_watered.txt", "a+") as f:
         f.write("Last watered {:%Y-%m-%d %H:%M}\n".format(datetime.datetime.now()))
     sock = bluetooth.BluetoothSocket( bluetooth.RFCOMM )
     sock.connect((bd_addr, port))
