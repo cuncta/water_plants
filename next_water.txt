@@ -1,1 +1,1 @@
-Watering twice a day at 10:00 and at 22:00 for 8 seconds
+Watering twice a day at 8:00 and at 20:00 for 5 seconds

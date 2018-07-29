@@ -39,14 +39,14 @@ def tail( f, lines=20 ):
     return '\n'.join(all_read_text.splitlines()[-total_lines_wanted:])
 def get_last_watered():
 	try:
-		f = open("last_watered.txt", "r")
-		return tail(f,1)
+		with open("last_watered.txt", "r") as f:
+		    return tail(f,1)
 	except:
 		return "NEVER!"
 def get_next_water():
 	try:
-		f = open("next_water.txt", "r")
-		return tail(f,1)
+		with open("next_water.txt", "r") as f:
+		    return tail(f,1)
 	except:
 		return "NEVER!"
 
@@ -79,16 +79,11 @@ def receive_soil_sensor_data():
 #        print 'message', message
         n = find(message, "#")
         return message[n[0]+1:n[1]]
-
-
-
 def auto_water():
     with open('watering_parameters.txt') as handle:
     	wp = json.loads(handle.read())
-
-    f1 = open("next_water.txt", "w+")
-    f1.write("Watering twice a day at "+str(wp["first_water"])+":00 and at "+str(wp["second_water"])+":00 for "+str(wp["watering_time"])+" seconds")
-    f1.close()
+    with open("next_water.txt", "w+") as f1:
+       f1.write("Watering twice a day at "+str(wp["first_water"])+":00 and at "+str(wp["second_water"])+":00 for "+str(wp["watering_time"])+" seconds")
     global scheduler
     scheduler = BlockingScheduler()
     scheduler.add_job(pump_on, 'cron',  day_of_week='mon-sun', hour=wp["first_water"], id='first_water')
@@ -102,9 +97,8 @@ def auto_water_off():
     scheduler.print_jobs()
 def pump_on():
     print 'watering'
-    f = open("last_watered.txt", "a+")
-    f.write("Last watered {:%Y-%m-%d %H:%M}\n".format(datetime.datetime.now()))
-    f.close()
+    with open("last_watered.txt", "a+") as f
+        f.write("Last watered {:%Y-%m-%d %H:%M}\n".format(datetime.datetime.now()))
     sock = bluetooth.BluetoothSocket( bluetooth.RFCOMM )
     sock.connect((bd_addr, port))
     sock.send('w')

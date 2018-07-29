@@ -1,6 +1,6 @@
 # Raspberry Pi and Arduino Automated Plant Watering with Website
 
-Set up your Pi and Arduinos to automatically take care of house plants!
+Set up your Pi and Arduino to automatically take care of house plants!
 In this project Pizero W is used to make a website where you can set up set the watering parameters. I set it to water the plants twice a day at desired time for a certain number of seconds [1-9].
 ![The website to control plants](website.png)
 
@@ -9,22 +9,22 @@ In this project Pizero W is used to make a website where you can set up set the 
 
 * Raspberry Pi Zero W
 
-* Arduino Uno x2
-* Bluetooth module H5-05 x2
-* 128x64 OLED display
+* Arduino Uno
+* Bluetooth module H5-05
+* 16x2 LCD display (compatible with the Hitachi HD44780 driver)
 * Relay module
 * Submersible Pump
-* Soil moisture sensors x5
 
-### Wiring to the first arduino
+### Wiring 
 
-* OLED screen:
-  * OLED GND pin to ground
-  * OLED VCC to 5V
-  * OLED SCL pin to A5
-  * OLED SDA pin to A4
-  * Check this nice To learn how to setup an OLED display and install useful libraries: [OLED tutorial](http://www.instructables.com/id/Monochrome-096-i2c-OLED-display-with-arduino-SSD13/ )
-
+* LCD screen:
+  * LCD RS pin to digital pin 12
+  * LCD Enable pin to digital pin 11
+  * LCD D4 pin to digital pin 5
+  * LCD D5 pin to digital pin 4
+  * LCD D6 pin to digital pin 3
+  * LCD D7 pin to digital pin 2
+  * Additionally, wire a 10k pot to +5V and GND, with it's wiper (output) to LCD screens VO pin (pin3). A 220 ohm resistor is used to power the backlight of the display, usually on pin 15 and 16 of the LCD connector
 
 * Bluetooth Module:
   * bluetooth rx pin to digital pin 8
@@ -33,21 +33,6 @@ In this project Pizero W is used to make a website where you can set up set the 
 * Relay:
   * relay pin to digital pin 7
   * the power supply of the submersible pump must be connected to this relay
-
-* DS3231 Clock
-  * GND to ground
-  * Vcc to 5V
-  * SCL to SCL in arduino
-  * SDA to SDA in arduino
-
-### Wiring to the second arduino
-
-* Bluetooth Module:
-* bluetooth rx pin to digital pin 8
-* bluetooth tx pin to digital pin 9
-
-*Soil moisture sensors:
-*to analog pin A0,A1,A2,A3,A4
 
 
 ## Prerequisites
@@ -70,15 +55,13 @@ In this project Pizero W is used to make a website where you can set up set the 
 
 ## Software
 
-There are three parts to this setup. Two files are the arduino sketches, and the other runs a local web server, and some files are used to store data.
-* Arduino
-    * *arduino_water_bt.ino* this is the arduino sketch. Arduino will check wether there is an incoming data from bluetooth. At the first setup uncomment line 102 (//setDS3231time(00,42,17,2,28,05,18);) and set the proper time. Then remember to comment it again if you plan to change the upload the code in arduino again. If it receives something there are four possibilities:
+There are three parts to this setup. One file is the arduino sketch, and the other runs a local web server, and some files are used to store data. 
+* Arduino 
+    * *arduino_water_bt.ino* this is the arduino sketch. Arduino will check wether there is an incoming data from bluetooth. If it receives something there are four possibilities:
         * "w" it activates the pump for a certain amount of seconds, default is 8.
         * "h" it waits for the next command
         * "0-9" if it receives a number between 0 and 9 it changes the watering time to that value
         * if any other string or value is received it does nothing
-* Arduino
-        * *arduino_soil_sensor.ino* this is the arduino sketch for the second arduino. It continuosly check the output value of the sensors and sends it via bluetooth to Pi.
 * Webserver
     * *auto_water.py* this file, when executed, it starts the auto watering process
     * *water.py* contains the functions called by the webserver.
@@ -90,16 +73,11 @@ There are three parts to this setup. Two files are the arduino sketches, and the
     * *watering_parameters.txt* contains the watering parameters saved as a dictionary
 
 ### Flask Webserver
-The template for the Webserver is defined in *main.html*, that must be in a subfolder called templates. Before starting the webserver change the bluetooth addresses with your corresponding address in *water.py*. The port should not be changed.
+The template for the Webserver is defined in *main.html*, that must be in a subfolder called templates. Before starting the webserver change the bluetooth address with your corresponding address in *water.py*. The port should not be changed.
 ```
-#bluetooth address of the arduino
-#controlling the pump
-bd_addr = "XX:XX:XX:XX:XX:XX"
+#bluetooth address of arduino
+bd_addr = "00:21:13:02:C2:54"
 port = 1
-#bluetooth address of the arduino
-#controlling the soil moisture sensors
-bd_addr2 = "XX:XX:XX:XX:XX:XX"
-port2 = 1
 ```
 To start the webserver run the following command:
 ```

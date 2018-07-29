@@ -1,1 +1,1 @@
-{"second_water": "22", "watering_time": "8", "first_water": "10"}
+{"second_water": "20", "watering_time": "5", "first_water": "8"}

@@ -64,13 +64,11 @@ def auto_water(toggle):
         if not running:
             os.system("python2.7 auto_water.py&")
     else:
-        f1 = open("next_water.txt", "w+")
-        f1.write("Auto Watering off")
-        f1.close()
+        with open("next_water.txt", "w+") as f1:
+            f1.write("Auto Watering off")
         templateData = template(text = "Auto Watering Off")
         os.system("pkill -f water.py")
-#        water.auto_water_off()
-
+        
     return render_template('main.html', **templateData)
 
 @app.route("/result",methods = ['GET', 'POST'])
