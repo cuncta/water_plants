@@ -48,6 +48,7 @@ void setup() {
   bluetooth.begin(9600);
   bluetooth.println("Bluetooth ready");
 
+ Serial.begin(9600);
   
 }
 
@@ -87,7 +88,9 @@ void loop() {
     lcd.clear();
     lcd.print("soil sensor");
     int Si0 = analogRead(A0);
+    String S0 = String(Si0);
     bluetooth.print("#{'S0': "+S0+"}");
+    Serial.print("#{'S0': "+S0+"}");
   }
   else {
     lcd.clear();

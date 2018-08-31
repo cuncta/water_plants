@@ -1,0 +1,23 @@
+2018-08-31 10:51 Pump on -- watering
+2018-08-31 10:51 get soil status
+2018-08-31 10:54 get soil status
+2018-08-31 10:54 get soil status
+2018-08-31 10:55 get soil status
+2018-08-31 11:09 get soil status
+2018-08-31 11:12 get soil status
+2018-08-31 11:14 get soil status
+2018-08-31 11:15 Pump on -- watering
+2018-08-31 11:15 get soil status
+2018-08-31 11:16 received soil sensor data
+2018-08-31 11:16 get soil status
+2018-08-31 11:17 received soil sensor data
+2018-08-31 11:17 get soil status
+2018-08-31 11:17 received soil sensor data
+2018-08-31 11:17 get soil status
+2018-08-31 11:17 received soil sensor data
+2018-08-31 11:17 get soil status
+2018-08-31 11:18 received soil sensor data
+2018-08-31 11:38 get soil status
+2018-08-31 11:38 received soil sensor data
+2018-08-31 11:39 get soil status
+2018-08-31 11:39 received soil sensor data

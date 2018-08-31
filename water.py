@@ -18,6 +18,7 @@ def get_last_watered():
 			return tail(f,1)
 	except:
 		return "NEVER!"
+
 def get_next_water():
 	update_logbook("checked next water")
 	try:
@@ -25,36 +26,41 @@ def get_next_water():
 			return tail(f,1)
 	except:
 		return "NEVER!"
+
 def get_watering_duration():
 	update_logbook("check watering duration")
 	with open('watering_parameters.txt') as handle:
 		wp = json.loads(handle.read())
 	m = "The watering duration is set to "+str(wp["watering_time"])+" seconds"
 	return m
+
 def get_soil_status():
 	update_logbook("get soil status")
 	m = receive_soil_sensor_data()
 	m = ast.literal_eval(m)
-	text = "Soil status in format plant:value \n\r          W1:"+str(m["S0"])+"   W2:"+str(m["S1"])+"   W3:"+str(m["S2"])+"   C1:"+str(m["S3"])+"   C2:"+str(m["S4"])
+	text = "Soil status in format plant:value \n\r W1:"+str(m["S0"])
 	return text
+
 def receive_soil_sensor_data():
-		bd_addr = "98:D3:91:F9:65:49"
-		port = 1
 		sock = bluetooth.BluetoothSocket( bluetooth.RFCOMM )
 		sock.connect((bd_addr, port))
-		print 'Connected to Elegoo'
-		message=[]
+		sock.send('s')
+		print "message sent"
 		count = 0
+		message = []
 		while (count < 1000):
+				print "test"
 				data = sock.recv(1)
+				print "received"
 				message.append(data)
 				count += 1
 		sock.close
 		message =''.join(message)
-#        print 'message', message
+		print 'message', message
 		n = find(message, "#")
 		update_logbook("received soil sensor data")
 		return message[n[0]+1:n[1]]
+
 def auto_water():
 	with open('watering_parameters.txt') as handle:
 		wp = json.loads(handle.read())
@@ -68,11 +74,13 @@ def auto_water():
 	scheduler.print_jobs()
 	scheduler.start()
 	return
+
 def auto_water_off():
 	update_logbook("Stopped auto watering")
 	scheduler.remove_job('first_water')
 	scheduler.remove_job('second_water')
 	scheduler.print_jobs()
+
 def pump_on():
 	print 'watering'
 	with open("last_watered.txt", "a+") as f:
@@ -84,6 +92,7 @@ def pump_on():
 	time.sleep(10)
 	sock.send('h')
 	sock.close()
+
 def set_watering_time():
 	with open('watering_parameters.txt') as handle:
 		wp = json.loads(handle.read())
@@ -97,8 +106,10 @@ def set_watering_time():
 	time.sleep(10)
 	sock.send('h')
 	sock.close()
+
 def find(s, ch):
 	return [i for i, ltr in enumerate(s) if ltr == ch]
+
 def tail( f, lines=20 ):
 	total_lines_wanted = lines
 
@@ -125,6 +136,7 @@ def tail( f, lines=20 ):
 		block_number -= 1
 	all_read_text = ''.join(reversed(blocks))
 	return '\n'.join(all_read_text.splitlines()[-total_lines_wanted:])
+
 def update_logbook(message):
 	with open("log_Book.txt", "a+") as f:
 		f.write("{:%Y-%m-%d %H:%M} ".format(datetime.datetime.now()) + message + "\n")
