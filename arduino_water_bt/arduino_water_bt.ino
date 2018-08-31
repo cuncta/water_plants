@@ -82,6 +82,13 @@ void loop() {
       lcd.clear();
       lcd.print(dur);
     }
+  // send sensor data  
+  else if( k == 's') { 
+    lcd.clear();
+    lcd.print("soil sensor");
+    int Si0 = analogRead(A0);
+    bluetooth.print("#{'S0': "+S0+"}");
+  }
   else {
     lcd.clear();
     lcd.print(k);
