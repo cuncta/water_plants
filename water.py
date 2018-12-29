@@ -4,6 +4,7 @@ import bluetooth
 from apscheduler.schedulers.background import BlockingScheduler
 import json
 import ast
+import Socket
 
 #bluetooth address of arduino
 bd_addr = "00:21:13:02:C2:54"
@@ -83,6 +84,8 @@ def auto_water_off():
 
 def pump_on():
 	print 'watering'
+	internet_connection = internet()
+	update_logbook("checked internet connection: " + str(internet_connection))
 	with open("last_watered.txt", "a+") as f:
 		f.write("Last watered {:%Y-%m-%d %H:%M}\n".format(datetime.datetime.now()))
 	update_logbook("Pump on -- watering")
@@ -140,3 +143,17 @@ def tail( f, lines=20 ):
 def update_logbook(message):
 	with open("log_Book.txt", "a+") as f:
 		f.write("{:%Y-%m-%d %H:%M} ".format(datetime.datetime.now()) + message + "\n")
+
+def internet(host="8.8.8.8", port=53, timeout=5):
+    """
+    Host: 8.8.8.8 (google-public-dns-a.google.com)
+    OpenPort: 53/tcp
+    Service: domain (DNS/TCP)
+    """
+    try:
+        socket.setdefaulttimeout(timeout)
+        socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
+        return True
+    except Exception as ex:
+        print ex.message
+        return False
